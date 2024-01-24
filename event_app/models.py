@@ -23,3 +23,17 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+class Room(models.Model):
+    name = models.CharField(max_length=100)
+    chairs = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.name
+
+class Chair(models.Model):
+    room = models.ForeignKey(Room, related_name='chairs', on_delete=models.CASCADE)
+    number = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.room.name} Chair {self.number}"
