@@ -21,12 +21,13 @@ from event_app import views as event_views
 from tag_app import views as tag_views
 
 router = DefaultRouter()
-router.register(r'events', event_views.EventViewSet)
 router.register(r'tags', tag_views.TagViewSet)
 router.register(r'taggeditems', tag_views.TaggedItemViewSet)
+router.register(r'events', event_views.EventViewSet)
+router.register(r'rooms', event_views.RoomViewSet)
+router.register(r'chairs', event_views.ChairViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-     path('api/', include('event_app.urls')),
 ]
