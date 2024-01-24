@@ -28,4 +28,5 @@ router.register(r'taggeditems', tag_views.TaggedItemViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+     path('api/', include('event_app.urls')),
 ]

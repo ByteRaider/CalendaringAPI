@@ -1,8 +1,16 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Event
-from .serializers import EventSerializer
+from .models import Event, Room, Chair
+from .serializers import EventSerializer, RoomSerializer, ChairSerializer
+
+class RoomViewSet(viewsets.ModelViewSet):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+
+class ChairViewSet(viewsets.ModelViewSet):
+    queryset = Chair.objects.all()
+    serializer_class = ChairSerializer
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()

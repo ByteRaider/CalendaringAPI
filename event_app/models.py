@@ -10,7 +10,7 @@ class Room(models.Model):
         return self.name
 
 class Chair(models.Model):
-    room = models.ForeignKey(Room, related_name="chairs", on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     number = models.IntegerField()
 
     def __str__(self):
