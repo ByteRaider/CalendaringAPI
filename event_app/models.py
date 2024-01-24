@@ -10,8 +10,12 @@ class Room(models.Model):
         return self.name
 
 class Chair(models.Model):
+    #room = models.ForeignKey(Room, related_name='chairs', on_delete=models.CASCADE)
+    #number = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    number = models.IntegerField()
+    number = models.PositiveIntegerField()
+    taken = models.BooleanField(default=False)
+    isVIP = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.room.name} Chair {self.number}"
