@@ -6,6 +6,8 @@ class Event(models.Model):
     description = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    #chair = models.ForeignKey(Chair, on_delete=models.SET_NULL, null=True, blank=True)
+
 
     def __str__(self):
         return self.title
@@ -24,6 +26,7 @@ class Event(models.Model):
         self.clean()
         super().save(*args, **kwargs)
 
+    
 class Room(models.Model):
     name = models.CharField(max_length=100)
     chairs = models.PositiveIntegerField(default=1)
@@ -32,7 +35,7 @@ class Room(models.Model):
         return self.name
 
 class Chair(models.Model):
-    room = models.ForeignKey(Room, related_name='chairs', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     number = models.IntegerField()
 
     def __str__(self):
