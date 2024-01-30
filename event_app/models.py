@@ -26,9 +26,9 @@ class Event(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     chair = models.ForeignKey(Chair, on_delete=models.CASCADE, null=True, blank=True)
-    #content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    #object_id = models.PositiveIntegerField()
-    #content_object = GenericForeignKey('content_type', 'object_id')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return self.title
