@@ -16,6 +16,9 @@ class Chair(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     isTaken = models.BooleanField(default=False)
     isVIP = models.BooleanField(default=False)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return f"{self.room.name} Chair {self.number}"
