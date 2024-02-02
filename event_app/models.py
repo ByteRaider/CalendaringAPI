@@ -16,7 +16,9 @@ class Chair(models.Model):
     isVIP = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.room.name} Chair {self.number}"
+        return f"{self.room.name} ChairID#:s {self.pk}"
+    class Meta:
+        ordering = ['pk']
     
 class Event(models.Model):
     title = models.CharField(max_length=200)
