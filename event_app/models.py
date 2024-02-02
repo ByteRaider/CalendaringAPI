@@ -11,12 +11,13 @@ class Room(models.Model):
 
 class Chair(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    chair_number = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     isTaken = models.BooleanField(default=False)
     isVIP = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.room.name} ChairID#:s {self.pk}"
+        return f"Chair#:{self.chair_number} ChairPK:{self.pk}"
     class Meta:
         ordering = ['pk']
     
