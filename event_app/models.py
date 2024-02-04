@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
     
 class Room(models.Model):
     name = models.CharField(max_length=100)
+    isActive = models.BooleanField(default=True)
     def __str__(self):
         return self.name
 
@@ -17,9 +18,9 @@ class Chair(models.Model):
     isVIP = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"Chair#:{self.chair_number} ChairPK:{self.pk}"
+        return f"{self.chair_number} PK:{self.pk}"
     class Meta:
-        ordering = ['pk']
+        ordering = ['chair_number']
     
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -27,7 +28,6 @@ class Event(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    #chair = models.ForeignKey(Chair, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey('contenttypes.ContentType', on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()

@@ -31,3 +31,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
 ]
+
+urlpatterns += [
+    # ...
+    path("__debug__/", include("debug_toolbar.urls")),
+]
