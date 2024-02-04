@@ -25,14 +25,17 @@ class RoomAdmin(admin.ModelAdmin):
 @admin.register(Chair)
 class ChairAdmin(admin.ModelAdmin):
     pass
-    list_display = ['id','chair_number', 'price', 'isTaken', 'isVIP']
-    list_filter = ['chair_number', 'isTaken', 'isVIP']
-    list_editable = ['chair_number', 'price']
+    list_display = ['id', 'room', 'chair_number', 'price', 'isTaken', 'isVIP']
+    list_filter = ['isTaken', 'isVIP', 'room__name']
+    list_editable = ['chair_number', 'price', 'isVIP']
     readonly_fields = ['isTaken']
+    ordering = ['room','isTaken', 'isVIP']
 
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     pass
-    list_display = ['id','room', 'start_time', 'end_time']
-    list_filter = ['id', 'room', 'start_time', 'end_time']  
+    list_display = ['id', 'title','description','room', 'start_time', 'end_time', 'user']
+    list_read_only_fields = ['user']
+    list_editable = ['title', 'description', 'start_time', 'end_time', 'room']
+    ordering = ['room', 'start_time', 'end_time']
