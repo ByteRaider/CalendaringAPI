@@ -4,8 +4,14 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
     
+class Room(models.Model):
+    name = models.CharField(max_length=100)
+    isActive = models.BooleanField(default=True)
+    def __str__(self):
+        return f"{self.name} PK:{self.pk}"
+
 class Chair(models.Model):
-    room = models.ForeignKey('Room', on_delete=models.CASCADE, related_name='chairs')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='chairs')
     chair_number = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     isTaken = models.BooleanField(default=False)
@@ -15,12 +21,6 @@ class Chair(models.Model):
         return f"{self.chair_number} PK:{self.pk}"
     class Meta:
         ordering = ['chair_number']
-class Room(models.Model):
-    name = models.CharField(max_length=100)
-    isActive = models.BooleanField(default=True)
-    def __str__(self):
-        return self.name
-
 
     
 class Event(models.Model):
@@ -35,28 +35,39 @@ class Event(models.Model):
     content_object = GenericForeignKey()
 
     def __str__(self):
-        return self.title
+        return f"{self.title} PK:{self.pk}"
 
     def clean(self):
-        # Check for overlapping events
-        overlapping_events = Event.objects.filter(
-            start_time__lt=self.end_time, 
-            end_time__gt=self.start_time
-        ).exclude(id=self.id)
-
-        if overlapping_events.exists():
-            raise ValidationError('There is an overlapping event, please try a different time')
+        # Check if start time is before end time
+        if self.start_time >= self.end_time:
+            raise ValidationError('Start time must be before end time')
         
         #Check if room is Active
         if not self.room.isActive:
             raise ValidationError({'room': 'The selected room is not active.'})
     
-        # Check chair availability - Adjust accordingly
+        # Check chair availability -
         if self.content_type.model == 'chair':
             chair = self.content_object
+            #check if chair is taken
             if chair.isTaken or not chair.room.isActive:
-                raise ValidationError({'chair': 'This chair is not available.'})
+                raise ValidationError({'chair': 'This chair is not available. Room not active or chair taken'})
+            #check chair is a room child
+            if chair.room != self.room:
+                raise ValidationError({'chair': 'This chair is not in the selected room.'})
+            
+            # Check overlaping chair pk events
+            overlapping_chairs = Event.objects.filter(
+                content_type=ContentType.objects.get_for_model(Chair.objects.get(pk=chair.pk)),
+                object_id=chair.pk,
+                start_time__lt=self.end_time,
+                end_time__gt=self.start_time
+            ).exclude(id=self.id)
+            if overlapping_chairs.exists():
+                raise ValidationError('There is an overlapping event on this chair, please try a different chair or time')
+            
 
+            
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)

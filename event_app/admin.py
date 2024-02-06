@@ -30,12 +30,24 @@ class ChairAdmin(admin.ModelAdmin):
     list_editable = ['chair_number', 'price', 'isVIP']
     readonly_fields = ['isTaken']
     ordering = ['room','isTaken', 'isVIP']
-
+    list_select_related = ['room']
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     pass
-    list_display = ['id', 'title','description','room', 'start_time', 'end_time', 'user']
+    list_display = ['id', 'title','description','room', 'start_time', 'end_time', 'user', 'room_chairs']
     list_read_only_fields = ['user']
     list_editable = ['title', 'description', 'start_time', 'end_time', 'room']
     ordering = ['room', 'start_time', 'end_time']
+    list_filter = ['start_time', 'end_time', 'room__name']
+    search_fields = ['title__icontains', 'room__name__icontains', 'user__username__icontains']
+
+    def get_queryset(self, request):
+        # Prefetch the related objects to optimize query performance
+        queryset = super().get_queryset(request).prefetch_related('room', 'user', 'room__chairs')
+        return queryset
+
+    @admin.display(description='Related chair')
+    def room_chairs(self, obj):
+        return ', '.join([f"Chair ID: {chair.id}, Chair Number: {chair.chair_number}" for chair in obj.room.chairs.all()])
+    room_chairs.short_description = 'Related Chairs'
