@@ -46,25 +46,16 @@ class Event(models.Model):
 
         if overlapping_events.exists():
             raise ValidationError('There is an overlapping event, please try a different time')
-
-        # Check if the room and chair are available
-        if Event.objects.filter(
-            room=self.room, 
-            chair=self.chair, 
-            start_time__lt=self.end_time, 
-            end_time__gt=self.start_time
-        ).exclude(id=self.id).exists():
-            raise ValidationError('The selected room and chair are not available.')
         
-        #Chack if room is Active
+        #Check if room is Active
         if not self.room.isActive:
             raise ValidationError({'room': 'The selected room is not active.'})
     
-        # Example logic to check chair availability - Adjust accordingly
+        # Check chair availability - Adjust accordingly
         if self.content_type.model == 'chair':
             chair = self.content_object
-        if chair.isTaken or not chair.room.isActive:
-            raise ValidationError({'chair': 'This chair is not available.'})
+            if chair.isTaken or not chair.room.isActive:
+                raise ValidationError({'chair': 'This chair is not available.'})
 
     def save(self, *args, **kwargs):
         self.clean()

@@ -8,6 +8,10 @@ from django.utils.timezone import make_aware
 from datetime import datetime
 from .models import Event, Room, Chair
 from .serializers import EventSerializer, RoomSerializer, ChairSerializer
+# for development only, delete next 2 lines for propduction -- IMPORTANT! -- IMPORTANT!-- IMPORTANT!
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+# for development only, delete PREVIOUS 2 lines for propduction -- IMPORTANT! -- IMPORTANT!-- IMPORTANT!
 
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
@@ -17,6 +21,7 @@ class ChairViewSet(viewsets.ModelViewSet):
     queryset = Chair.objects.all()
     serializer_class = ChairSerializer
 
+@method_decorator(csrf_exempt, name='dispatch')
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
