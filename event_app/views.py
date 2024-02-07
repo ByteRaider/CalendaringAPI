@@ -16,10 +16,14 @@ from django.utils.decorators import method_decorator
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class ChairViewSet(viewsets.ModelViewSet):
     queryset = Chair.objects.all()
     serializer_class = ChairSerializer
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class EventViewSet(viewsets.ModelViewSet):
