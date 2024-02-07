@@ -3,10 +3,12 @@ from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+from django.conf import settings
     
 class Room(models.Model):
     name = models.CharField(max_length=100)
     isActive = models.BooleanField(default=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
     def __str__(self):
         return f"{self.name} PK:{self.pk}"
 
@@ -16,6 +18,7 @@ class Chair(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     isTaken = models.BooleanField(default=False)
     isVIP = models.BooleanField(default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.chair_number} PK:{self.pk}"

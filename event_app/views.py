@@ -35,8 +35,9 @@ class EventViewSet(viewsets.ModelViewSet):
         # Filter by room if provided
         if room is not None:
             queryset = queryset.filter(room__id=room)
-
         #return queryset.prefetch_related('room', 'room__chairs')
+        return queryset.prefetch_related('room')
+    
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
