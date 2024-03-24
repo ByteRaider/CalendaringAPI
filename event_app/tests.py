@@ -21,7 +21,7 @@ class setupTest(TestCase):
     
     def test_assing_chair2Room(self):
         self.assertEqual(self.chair.chair_number, 1)
-        print(self.chair, "Created successfully in room: ", self.room)
+        print(self.chair, " Chair created successfully in room: ", self.room)
 
     def test_create_event(self):
         event = Event.objects.create(
