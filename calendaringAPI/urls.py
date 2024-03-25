@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from event_app import views as event_views
 from tag_app import views as tag_views
+from user_management import views as user_views
 
 router = DefaultRouter()
 router.register(r'tags', tag_views.TagViewSet)
@@ -26,6 +27,9 @@ router.register(r'taggeditems', tag_views.TaggedItemViewSet)
 router.register(r'events', event_views.EventViewSet)
 router.register(r'rooms', event_views.RoomViewSet)
 router.register(r'chairs', event_views.ChairViewSet)
+router.register(r'users', user_views.UserViewSet)
+router.register(r'userprofiles', user_views.UserProfileViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
