@@ -39,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'debug_toolbar',
     'calendaringAPI',
     'event_app',
     'tag_app',
-    'debug_toolbar',
+    'user_management',
     
 ]
 
@@ -80,13 +81,23 @@ WSGI_APPLICATION = 'calendaringAPI.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'calendaringAPI',
+#        'HOST': 'LOCALHOST',
+#        'USER': 'dev',
+#        'PASSWORD': '456',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'calendaringAPI',
-        'HOST': 'LOCALHOST',
-        'USER': 'dev',
-        'PASSWORD': '456',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+        'TEST': {
+            'NAME': 'mytestdatabase',
+        },
     }
 }
 
