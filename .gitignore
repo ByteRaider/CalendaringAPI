@@ -5,6 +5,7 @@ venv/
 *.pyc
 __pycache__
 db.sqlite3
+*.sqlite3
 media
 .vscode/*
 !.vscode/settings.json
@@ -12,6 +13,7 @@ media
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+mydatabase
 
 
 
