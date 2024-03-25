@@ -17,11 +17,13 @@ class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     def perform_create(self, serializer):
-        if self.request.user.profile.user_type.lower() == 'standard':
-            if Room.objects.filter(user=self.request.user).count() >= 1:
+        if self.request.user.profile.user_type.lower() == 'standard' and Room.objects.filter(user=self.request.user).count() >= 1:
                 raise ValidationError({'error': 'Standard users can only create 1 room.'}, code=status.HTTP_400_BAD_REQUEST)
+        if not self.request.user.profile:
+            raise ValidationError({'error': 'User profile does not exist'}, code=status.HTTP_400_BAD_REQUEST)
         else:
             serializer.save(user=self.request.user)
+            
 
 class ChairViewSet(viewsets.ModelViewSet):
     queryset = Chair.objects.all()
